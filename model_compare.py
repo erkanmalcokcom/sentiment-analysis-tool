@@ -8,7 +8,10 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-
+'''
+We are going to compare the performance of the model with different
+number of rows of the dataset. We will use 1000, 2000 and 4000 rows
+'''
 
 def load_and_preprocess_data(filepath, nrows):
     df = pd.read_csv(filepath, nrows=nrows)
