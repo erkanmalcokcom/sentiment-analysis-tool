@@ -22,7 +22,7 @@ data = {'review': ['This movie was great!', 'I did not like the movie', 'Just ok
 
 
 # add new data
-new_data = pd.read_csv('data/IMDB Dataset.csv')
+new_data = pd.read_csv('data/IMDB Dataset_reduced.csv')
 print(new_data.head())
 data.update(new_data)
 
