@@ -17,13 +17,14 @@ from sklearn.preprocessing import label_binarize
 def download_nltk_packages(packages):
     for package in packages:
         try:
-            if not nltk.data.find(package):
-                nltk.download(package)
+            nltk.data.find('tokenizers/' + package) if package == 'punkt' else nltk.data.find('corpora/' + package)
         except LookupError:
             nltk.download(package)
 
 # Specify the packages you need
-packages = ['tokenizers/punkt', 'corpora/stopwords']
+packages = ['punkt', 'stopwords']
+
+# Download the packages
 download_nltk_packages(packages)
 
 def preprocess_data(df):
