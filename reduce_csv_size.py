@@ -1,6 +1,6 @@
 import pandas as pd
 
-data = pd.read_csv('data/IMDB Dataset.csv')
+data = pd.read_csv('data/raw/IMDB Dataset.csv')
 import os
 
 print(os.system("clear"))
