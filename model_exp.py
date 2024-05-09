@@ -47,7 +47,7 @@ def preprocess_data(df):
 
 # Example DataFrame
 df = pd.read_csv('data/processed/IMDB Dataset_reduced.csv')
-
+df = df.iloc[:1000]  # For demonstration purposes
 X, y = preprocess_data(df)
 
 # Binarize the target variable
@@ -77,6 +77,7 @@ predictions = (probabilities[:, 1] >= threshold).astype(int)
 # Calculate new metrics
 print("New Accuracy:", accuracy_score(y_test, predictions))
 print("New Classification Report:\n", classification_report(y_test, predictions))
+print("*" * 50)
 
 from sklearn.model_selection import GridSearchCV
 
@@ -84,18 +85,26 @@ from sklearn.model_selection import GridSearchCV
 param_grid = {'C': [0.1, 1, 10, 100], 'penalty': ['l1', 'l2']}  # Logistic Regression parameters
 
 # Create a GridSearchCV object
-grid_search = GridSearchCV(LogisticRegression(), param_grid, cv=5, scoring='accuracy')
+grid_search = GridSearchCV(LogisticRegression(solver='liblinear'), param_grid, cv=5, scoring='accuracy', error_score='raise')
+
+
 grid_search.fit(X_train, y_train)
 
+# Print the best parameters and best score
+print("*" * 50)
 print("Best parameters:", grid_search.best_params_)
 print("Best cross-validation score: {:.2f}".format(grid_search.best_score_))
+print("*" * 50)
 
+from tqdm import tqdm
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import accuracy_score
 from sklearn.ensemble import VotingClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 
 # Create different models
-model1 = LogisticRegression()
+model1 = LogisticRegression(solver='saga')
 model2 = SVC(probability=True)
 model3 = RandomForestClassifier()
 
@@ -103,7 +112,10 @@ model3 = RandomForestClassifier()
 voting_classifier = VotingClassifier(
     estimators=[('lr', model1), ('svc', model2), ('rf', model3)],
     voting='soft')
-voting_classifier.fit(X_train, y_train)
 
+# Wrap the fit method with tqdm to display a progress bar
+for i in tqdm(range(100)):
+    voting_classifier.fit(X_train, y_train)
+    
 # Evaluate the model
 print("Ensemble model accuracy:", accuracy_score(y_test, voting_classifier.predict(X_test)))
