@@ -164,4 +164,4 @@ cython_debug/
 data/raw/
 
 # Ignore all specific files
-[ignore]*.*
+[ignore]*.py
