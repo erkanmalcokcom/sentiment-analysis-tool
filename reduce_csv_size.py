@@ -19,7 +19,7 @@ print(f'Number of rows: {num_rows}')
 
 
 # Reduce the size of the dataset
-data = data.iloc[:40000]
+data = data.iloc[:30000]
 data.to_csv('data/processed/IMDB_Dataset_reduced.csv', index=False)
 
 # Display the first few rows of the reduced dataset
